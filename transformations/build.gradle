@@ -17,6 +17,14 @@ android {
     consumerProguardFiles 'proguard-rules.txt'
   }
 
+  publishing {
+    singleVariant("release") {
+      withSourcesJar()
+      withJavadocJar()
+    }
+  }
+
+
   compileOptions {
     sourceCompatibility JavaVersion.VERSION_17
     targetCompatibility JavaVersion.VERSION_17
@@ -55,3 +63,25 @@ ext {
 // apply from: 'https://gist.githubusercontent.com/wasabeef/cf14805bee509baf7461974582f17d26/raw/install-v1.gradle'
 
 //apply from: 'https://gist.githubusercontent.com/wasabeef/2f2ae8d97b429e7d967128125dc47854/raw/maven-central-v1.gradle'
+
+apply plugin: 'maven-publish'
+
+publishing {
+  publications {
+    release(MavenPublication) {
+      groupId = 'io.github.triniwiz'
+      artifactId = 'glide-transformations'
+      version = '4.3.0'
+    }
+  }
+}
+
+afterEvaluate {
+  publishing {
+    publications {
+      release(MavenPublication) {
+        from components.release
+      }
+    }
+  }
+}
